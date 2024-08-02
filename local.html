@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compdata JSON Converter</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
+    <script src="validate.js" defer></script>
+    <script src="makejson.js" defer></script>
+</head>
+<body>
+    <header>
+        <div id="header">
+            <div id="button-container">
+                <div id="filesToJsonBtn" class="btn" onclick="changewindow('filesToJson')">Files to JSON</div>
+                <div id="jsonToFilesBtn" class="btn hidden" onclick="changewindow('jsonToFiles')">JSON to Files</div>
+            </div>
+        </div>
+        
+    </header>
+    
+    <main>
+        <div id="filesToJson" class="window">
+            <form id="filesToJsonForm">
+                <input type="file" id="files" name="files" multiple accept=".txt">
+                <button id="downloadjsonbtn" type="submit" class="hidden" onclick="downloadJson()">Download JSON</button>
+            </form>
+            <div id="helperText">
+                <p>Required files:</p>
+                <ul>
+                    <li>advancement.txt</li>
+                    <li>compids.txt</li>
+                    <li>compobj.txt</li>
+                    <li>initteams.txt</li>
+                    <li>objectives.txt</li>
+                    <li>schedule.txt</li>
+                    <li>settings.txt</li>
+                    <li>standings.txt</li>
+                    <li>tasks.txt</li>
+                    <li>weather.txt</li>
+                </ul>
+            </div>
+            <pre id="jsonOutput"></pre>
+        </div>
+        <div id="jsonToFiles" class="window hidden">
+            <!-- Content for JSON to Files -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 scyppan</p>
+    </footer>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+          <span id="closeModal" class="close">&times;</span>
+          <p id="modalMessage"></p>
+        </div>
+    </div>
+</body>
+</html>
