@@ -1,3 +1,5 @@
+let filesContent = {};
+
 const requiredFiles = [
     'advancement.txt',
     'compids.txt',
@@ -24,8 +26,6 @@ const validationRules = {
     'weather.txt': /^\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+$/,
 };
 
-let filesContent = {};
-
 function validateAllIndividualFiles() {
     let allValid = true;
     Object.entries(validationRules).forEach(([filename, regex]) => {
@@ -39,7 +39,8 @@ function validateAllIndividualFiles() {
 
     if (allValid) {
         console.log('All files passed validation');
-        document.getElementById("downloadjsonbtn").classList.remove('hidden');
+        builddata();
+        //document.getElementById("downloadjsonbtn").classList.remove('hidden');
     } else {
         resetFileInput();
     }

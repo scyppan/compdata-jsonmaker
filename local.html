@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="main.js" defer></script>
     <script src="validate.js" defer></script>
+    <script src="data.js" defer></script>
     <script src="makejson.js" defer></script>
 </head>
 <body>
@@ -24,7 +25,7 @@
         <div id="filesToJson" class="window">
             <form id="filesToJsonForm">
                 <input type="file" id="files" name="files" multiple accept=".txt">
-                <button id="downloadjsonbtn" type="submit" class="hidden" onclick="downloadJson()">Download JSON</button>
+                <button id="downloadjsonbtn" type="submit" class="hidden" onclick="downloadDataAsJson()">Download JSON</button>
             </form>
             <div id="helperText">
                 <p>Required files:</p>
