@@ -30,17 +30,4 @@ function changewindow(which) {
     }
 }
 
-function downloadJson() {
-    let jsonObject=filesContent;
-    const now = new Date();
-    const datetimeString = `${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}-${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}`;
-    const jsonString = JSON.stringify(jsonObject, null, 2);
-    const blob = new Blob([jsonString], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `scyppan-${datetimeString}-compdata.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-}
+
