@@ -62,8 +62,8 @@ function buildcompobjdata(content){
         data["compobj"].push({
             line: parseInt(parts[0]),
             level: parseInt(parts[1]),
-            shortname: parseInt(parts[2]) || '',
-            longname: parseInt(parts[3]) || '',
+            shortname: parts[2] || '',
+            longname: parts[3] || '',
             parent: parseInt(parts[4])
         })
     });
