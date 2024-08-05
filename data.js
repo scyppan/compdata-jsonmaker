@@ -104,7 +104,7 @@ function buildinitteamsdata(content) {
     lines.forEach(line=>{
         let parts=line.split(',');
         data["initteams"].push({
-            competitionid: parseInt(parts[0]),
+            id: parseInt(parts[0]),
             finishingpos: parseInt(parts[1]),
             teamid: parseInt(parts[2])
         })
@@ -119,7 +119,7 @@ function buildobjectivesdata(content) {
     lines.forEach(line=>{
         let parts=line.split(',');
         data["objectives"].push({
-            competitionid: parseInt(parts[0]),
+            id: parseInt(parts[0]),
             objective: parts[1],
             value: parseInt(parts[2])
         })
@@ -134,7 +134,7 @@ function buildscheduledata(content) {
     lines.forEach(line=>{
         let parts=line.split(',');
         data["schedule"].push({
-            stageid: parseInt(parts[0]),
+            id: parseInt(parts[0]),
             day: parseInt(parts[1]),
             round: parseInt(parts[2]),
             min: parseInt(parts[3]),
@@ -152,7 +152,7 @@ function buildsettingsdata(content) {
     lines.forEach(line=>{
         let parts=line.split(',');
         data["settings"].push({
-            competitionid: parseInt(parts[0]),
+            id: parseInt(parts[0]),
             tag: parts[1],
             value: parseInt(parts[2]),
         })
@@ -167,7 +167,7 @@ function buildstandingsdata(content) {
     lines.forEach(line=>{
         let parts=line.split(',');
         data["standings"].push({
-            competitionid: parseInt(parts[0]),
+            id: parseInt(parts[0]),
             position: parseInt(parts[1])
         })
     });
@@ -180,13 +180,13 @@ function buildtasksdata(content){
     lines.forEach(line=>{
         let parts=line.split(',');
         data["tasks"].push({
-            competitionid: parseInt(parts[0]),
+            id: parseInt(parts[0]),
             when: parseInt(parts[1]),
             description: parseInt(parts[2]),
             group: parseInt(parts[3]),
             order: parseInt(parts[4]),
-            teamid: parseInt(parts[5]),
-            constant: parseInt(parts[6])
+            param1: parseInt(parts[5]),
+            param2: parseInt(parts[6])
         })
     });
 }
@@ -198,7 +198,7 @@ function buildweatherdata(content){
     lines.forEach(line=>{
         let parts=line.split(',');
         data["weather"].push({
-            countryobjid: parseInt(parts[0]),
+            id: parseInt(parts[0]),
             month: parseInt(parts[1]),
             chancedry: parseInt(parts[2]),
             chancerain: parseInt(parts[3]),
