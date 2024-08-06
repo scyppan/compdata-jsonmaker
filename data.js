@@ -181,8 +181,8 @@ function buildtasksdata(content){
         let parts=line.split(',');
         data["tasks"].push({
             id: parseInt(parts[0]),
-            when: parseInt(parts[1]),
-            description: parseInt(parts[2]),
+            when: parts[1],
+            description: parts[2],
             group: parseInt(parts[3]),
             order: parseInt(parts[4]),
             param1: parseInt(parts[5]),
