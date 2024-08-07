@@ -145,17 +145,15 @@ function buildscheduledata(content) {
 }
 
 function buildsettingsdata(content) {
+    data["settings"] = [];
 
-    data["settings"]=[]
-
-    let lines = content.split('\r\n');
-    lines.forEach(line=>{
-        let parts=line.split(',');
+    content.split('\r\n').forEach(line => {
+        let parts = line.split(',');
         data["settings"].push({
             id: parseInt(parts[0]),
             tag: parts[1],
-            value: parseInt(parts[2]),
-        })
+            value: (parts[1] === 'match_stagetype' || parts[1] === 'match_matchsituation') ? parts[2] : parseInt(parts[2])
+        });
     });
 }
 
