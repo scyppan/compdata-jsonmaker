@@ -77,8 +77,8 @@ function buildadvancementdata(content){
     lines.forEach(line=>{
         let parts=line.split(',');
         data["advancement"].push({
-            pullfromcompetition: parseInt(parts[0]),
-            pullfromposition: parseInt(parts[1]),
+            groupid: parseInt(parts[0]),
+            slot: parseInt(parts[1]),
             pushtocompetition: parseInt(parts[2]),
             pushtoposition: parseInt(parts[3])
         })
@@ -112,18 +112,25 @@ function buildinitteamsdata(content) {
 }
 
 function buildobjectivesdata(content) {
+    data["objectives"] = [];
 
-    data["objectives"]=[]
+    const lines = content.split('\r\n');
+    const uniqueEntries = new Map();
 
-    let lines = content.split('\r\n');
-    lines.forEach(line=>{
-        let parts=line.split(',');
-        data["objectives"].push({
+    lines.forEach(line => {
+        const parts = line.split(',');
+        const entry = {
             id: parseInt(parts[0]),
             objective: parts[1],
             value: parseInt(parts[2])
-        })
+        };
+        const key = `${entry.id}-${entry.objective}`;
+        if (!uniqueEntries.has(key)) {
+            uniqueEntries.set(key, entry);
+        }
     });
+
+    data["objectives"] = Array.from(uniqueEntries.values());
 }
 
 function buildscheduledata(content) {
@@ -147,13 +154,37 @@ function buildscheduledata(content) {
 function buildsettingsdata(content) {
     data["settings"] = [];
 
+    // Define arrays for text and numeric tags
+    const textTags = [
+        'comp_type', 'rule_bookings', 'rule_offsides', 'rule_injuries', 'match_stagetype',
+        'match_matchsituation', 'match_endruleleague', 'match_endruleko1leg', 'match_endruleko2leg1',
+        'match_endruleko2leg2', 'match_endrulefriendly', 'standings_sort', 'schedule_seasonstartmonth',
+        'is_women_competition', 'rule_allowadditionalsub', 'advance_pointskeeprounding',
+        'match_celebrationlevel', 'schedule_matchup_behavior', 'standings_use_shadow_table', 
+        'schedule_push_jan_season_year', 'rule_fixedmatchesdates', 'match_canusefancards', 'schedule_year_real_version',
+        'rule_bookings', 'rule_offsides', 'rule_injuries', 'rule_allowadditionalsub', 'schedule_internationaldependency'
+    ];
+
     content.split('\r\n').forEach(line => {
         let parts = line.split(',');
-        data["settings"].push({
-            id: parseInt(parts[0]),
-            tag: parts[1],
-            value: (parts[1] === 'match_stagetype' || parts[1] === 'match_matchsituation') ? parts[2] : parseInt(parts[2])
-        });
+        let id = parseInt(parts[0]);
+        let tag = parts[1];
+        let value = parts[2];
+
+        // Determine if the tag requires text or numeric value
+        if (textTags.includes(tag)) {
+            data["settings"].push({
+                id: id,
+                tag: tag,
+                value: value
+            });
+        } else {
+            data["settings"].push({
+                id: id,
+                tag: tag,
+                value: parseInt(value)
+            });
+        }
     });
 }
 
