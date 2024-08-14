@@ -9,8 +9,6 @@ function builddata() {
     console.log("Files Found: ", filesArray);
 
     filesArray.forEach(file => {
-
-        // 10 files matter
         
         switch(file.filename) {
             case "advancement.txt":

@@ -1,6 +1,8 @@
 function downloadDataAsJson() {
-    // Filter out null values from the data
-    const filteredData = data.filter(item => item !== null);
+    
+    const filteredData = Object.fromEntries(
+        Object.entries(data).filter(([_, value]) => value !== null)
+    );    
 
     const jsonData = JSON.stringify(filteredData, null, 2); // Convert filtered data to JSON string
     const blob = new Blob([jsonData], { type: 'application/json' }); // Create a blob
