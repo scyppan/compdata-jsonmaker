@@ -16,9 +16,6 @@ function builddata() {
             case "advancement.txt":
             buildadvancementdata(file.content);
             break;
-            case "compids.txt":
-            buildcompidsdata(file.content);
-            break;
             case "compobj.txt":
             buildcompobjdata(file.content);
             break;
@@ -82,17 +79,6 @@ function buildadvancementdata(content){
             pushtocompetition: parseInt(parts[2]),
             pushtoposition: parseInt(parts[3])
         })
-    });
-}
-
-function buildcompidsdata(content) {
-    data["compids"] = [];
-
-    let lines = content.split('\r\n');
-    lines.forEach(line => {
-        data["compids"].push({
-            compid: parseInt(line)
-        });
     });
 }
 

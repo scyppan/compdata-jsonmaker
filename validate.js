@@ -2,7 +2,6 @@ let filesContent = {};
 
 const requiredFiles = [
     'advancement.txt',
-    'compids.txt',
     'compobj.txt',
     'initteams.txt',
     'objectives.txt',
