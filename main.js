@@ -29,5 +29,3 @@ function changewindow(which) {
             break;
     }
 }
-
-
