@@ -17,9 +17,6 @@ function builddata() {
             case "compobj.txt":
             buildcompobjdata(file.content);
             break;
-            case "initteams.txt":
-            buildinitteamsdata(file.content);
-            break;
             case "objectives.txt":
             buildobjectivesdata(file.content);
             break;
@@ -47,51 +44,53 @@ function builddata() {
     document.getElementById('downloadjsonbtn').classList.remove('hidden');
 }
 
-function buildcompobjdata(content){
-
-    data["compobj"]=[]
+function buildcompobjdata(content) {
+    data["compobj"] = [];
 
     let lines = content.split('\r\n');
-    lines.forEach(line=>{
-        let parts=line.split(',');
-        data["compobj"].push({
-            line: parseInt(parts[0]),
-            level: parseInt(parts[1]),
-            shortname: parts[2] || '',
-            longname: parts[3] || '',
-            parent: parseInt(parts[4])
-        })
+    lines.forEach(line => {
+        let parts = line.split(',');
+
+        // Convert to integers and check for null or NaN values
+        let parsedLine = parseInt(parts[0]);
+        let parsedLevel = parseInt(parts[1]);
+        let parsedParent = parseInt(parts[4]);
+
+        // Only add to data if all required fields are not null or NaN
+        if (!isNaN(parsedLine) && !isNaN(parsedLevel) && !isNaN(parsedParent) && parts[2] !== undefined && parts[3] !== undefined) {
+            data["compobj"].push({
+                line: parsedLine,
+                level: parsedLevel,
+                shortname: parts[2] || '', // Default to empty string if undefined
+                longname: parts[3] || '',  // Default to empty string if undefined
+                parent: parsedParent
+            });
+        }
     });
 }
 
-function buildadvancementdata(content){
-
-    data["advancement"]=[]
-
-    let lines = content.split('\r\n');
-    lines.forEach(line=>{
-        let parts=line.split(',');
-        data["advancement"].push({
-            groupid: parseInt(parts[0]),
-            slot: parseInt(parts[1]),
-            pushtocompetition: parseInt(parts[2]),
-            pushtoposition: parseInt(parts[3])
-        })
-    });
-}
-
-function buildinitteamsdata(content) {
-
-    data["initteams"]=[]
+function buildadvancementdata(content) {
+    data["advancement"] = [];
 
     let lines = content.split('\r\n');
-    lines.forEach(line=>{
-        let parts=line.split(',');
-        data["initteams"].push({
-            id: parseInt(parts[0]),
-            finishingpos: parseInt(parts[1]),
-            teamid: parseInt(parts[2])
-        })
+    lines.forEach(line => {
+        let parts = line.split(',');
+
+        // Convert to integers and check for null or NaN values
+        let parsedGroupId = parseInt(parts[0]);
+        let parsedSlot = parseInt(parts[1]);
+        let parsedPushToCompetition = parseInt(parts[2]);
+        let parsedPushToPosition = parseInt(parts[3]);
+
+        // Only add to data if all fields are valid numbers
+        if (!isNaN(parsedGroupId) && !isNaN(parsedSlot) && !isNaN(parsedPushToCompetition) && !isNaN(parsedPushToPosition)) {
+            data["advancement"].push({
+                groupid: parsedGroupId,
+                slot: parsedSlot,
+                pushtocompetition: parsedPushToCompetition,
+                pushtoposition: parsedPushToPosition
+            });
+        }
     });
 }
 
@@ -103,14 +102,19 @@ function buildobjectivesdata(content) {
 
     lines.forEach(line => {
         const parts = line.split(',');
-        const entry = {
-            id: parseInt(parts[0]),
-            objective: parts[1],
-            value: parseInt(parts[2])
-        };
-        const key = `${entry.id}-${entry.objective}`;
-        if (!uniqueEntries.has(key)) {
-            uniqueEntries.set(key, entry);
+        const parsedId = parseInt(parts[0]);
+        const parsedValue = parseInt(parts[2]);
+
+        if (!isNaN(parsedId) && parts[1] !== undefined && !isNaN(parsedValue)) {
+            const entry = {
+                id: parsedId,
+                objective: parts[1],
+                value: parsedValue
+            };
+            const key = `${entry.id}-${entry.objective}`;
+            if (!uniqueEntries.has(key)) {
+                uniqueEntries.set(key, entry);
+            }
         }
     });
 
@@ -118,27 +122,35 @@ function buildobjectivesdata(content) {
 }
 
 function buildscheduledata(content) {
-
-    data["schedule"]=[]
+    data["schedule"] = [];
 
     let lines = content.split('\r\n');
-    lines.forEach(line=>{
-        let parts=line.split(',');
-        data["schedule"].push({
-            id: parseInt(parts[0]),
-            day: parseInt(parts[1]),
-            round: parseInt(parts[2]),
-            min: parseInt(parts[3]),
-            max: parseInt(parts[4]),
-            time: parseInt(parts[5])
-        })
+    lines.forEach(line => {
+        let parts = line.split(',');
+
+        const parsedId = parseInt(parts[0]);
+        const parsedDay = parseInt(parts[1]);
+        const parsedRound = parseInt(parts[2]);
+        const parsedMin = parseInt(parts[3]);
+        const parsedMax = parseInt(parts[4]);
+        const parsedTime = parseInt(parts[5]);
+
+        if (!isNaN(parsedId) && !isNaN(parsedDay) && !isNaN(parsedRound) && !isNaN(parsedMin) && !isNaN(parsedMax) && !isNaN(parsedTime)) {
+            data["schedule"].push({
+                id: parsedId,
+                day: parsedDay,
+                round: parsedRound,
+                min: parsedMin,
+                max: parsedMax,
+                time: parsedTime
+            });
+        }
     });
 }
 
 function buildsettingsdata(content) {
     data["settings"] = [];
 
-    // Define arrays for text and numeric tags
     const textTags = [
         'comp_type', 'rule_bookings', 'rule_offsides', 'rule_injuries', 'match_stagetype',
         'match_matchsituation', 'match_endruleleague', 'match_endruleko1leg', 'match_endruleko2leg1',
@@ -155,70 +167,101 @@ function buildsettingsdata(content) {
         let tag = parts[1];
         let value = parts[2];
 
-        // Determine if the tag requires text or numeric value
-        if (textTags.includes(tag)) {
-            data["settings"].push({
-                id: id,
-                tag: tag,
-                value: value
-            });
-        } else {
-            data["settings"].push({
-                id: id,
-                tag: tag,
-                value: parseInt(value)
-            });
+        if (!isNaN(id) && tag !== undefined && value !== undefined) {
+            if (textTags.includes(tag)) {
+                data["settings"].push({
+                    id: id,
+                    tag: tag,
+                    value: value
+                });
+            } else {
+                const numericValue = parseInt(value);
+                if (!isNaN(numericValue)) {
+                    data["settings"].push({
+                        id: id,
+                        tag: tag,
+                        value: numericValue
+                    });
+                }
+            }
         }
     });
 }
 
 function buildstandingsdata(content) {
-
-    data["standings"]=[]
+    data["standings"] = [];
 
     let lines = content.split('\r\n');
-    lines.forEach(line=>{
-        let parts=line.split(',');
-        data["standings"].push({
-            id: parseInt(parts[0]),
-            position: parseInt(parts[1])
-        })
+    lines.forEach(line => {
+        let parts = line.split(',');
+        const parsedId = parseInt(parts[0]);
+        const parsedPosition = parseInt(parts[1]);
+
+        if (!isNaN(parsedId) && !isNaN(parsedPosition)) {
+            data["standings"].push({
+                id: parsedId,
+                position: parsedPosition
+            });
+        }
     });
 }
 
-function buildtasksdata(content){
-    data["tasks"]=[]
+function buildtasksdata(content) {
+    data["tasks"] = [];
 
     let lines = content.split('\r\n');
-    lines.forEach(line=>{
-        let parts=line.split(',');
-        data["tasks"].push({
-            id: parseInt(parts[0]),
-            when: parts[1],
-            description: parts[2],
-            param1: parseInt(parts[3]),
-            param2: parseInt(parts[4]),
-            param3: parseInt(parts[5]),
-            param4: parseInt(parts[6])
-        })
+    lines.forEach(line => {
+        let parts = line.split(',');
+
+        const parsedId = parseInt(parts[0]);
+        const parsedParam1 = parseInt(parts[3]);
+        const parsedParam2 = parseInt(parts[4]);
+        const parsedParam3 = parseInt(parts[5]);
+        const parsedParam4 = parseInt(parts[6]);
+
+        if (!isNaN(parsedId) && parts[1] !== undefined && parts[2] !== undefined && 
+            !isNaN(parsedParam1) && !isNaN(parsedParam2) && !isNaN(parsedParam3) && !isNaN(parsedParam4)) {
+            data["tasks"].push({
+                id: parsedId,
+                when: parts[1],
+                description: parts[2],
+                param1: parsedParam1,
+                param2: parsedParam2,
+                param3: parsedParam3,
+                param4: parsedParam4
+            });
+        }
     });
 }
 
-function buildweatherdata(content){
-    data["weather"]=[]
+function buildweatherdata(content) {
+    data["weather"] = [];
 
     let lines = content.split('\r\n');
-    lines.forEach(line=>{
-        let parts=line.split(',');
-        data["weather"].push({
-            id: parseInt(parts[0]),
-            month: parseInt(parts[1]),
-            chancedry: parseInt(parts[2]),
-            chancerain: parseInt(parts[3]),
-            chancesnow: parseInt(parts[4]),
-            chanceovercast: parseInt(parts[5]),
-            sunset: parseInt(parts[6]),
-            nighttime: parseInt(parts[7])
-        })
+    lines.forEach(line => {
+        let parts = line.split(',');
+
+        const parsedId = parseInt(parts[0]);
+        const parsedMonth = parseInt(parts[1]);
+        const parsedChanceDry = parseInt(parts[2]);
+        const parsedChanceRain = parseInt(parts[3]);
+        const parsedChanceSnow = parseInt(parts[4]);
+        const parsedChanceOvercast = parseInt(parts[5]);
+        const parsedSunset = parseInt(parts[6]);
+        const parsedNighttime = parseInt(parts[7]);
+
+        if (!isNaN(parsedId) && !isNaN(parsedMonth) && !isNaN(parsedChanceDry) && !isNaN(parsedChanceRain) &&
+            !isNaN(parsedChanceSnow) && !isNaN(parsedChanceOvercast) && !isNaN(parsedSunset) && !isNaN(parsedNighttime)) {
+            data["weather"].push({
+                id: parsedId,
+                month: parsedMonth,
+                chancedry: parsedChanceDry,
+                chancerain: parsedChanceRain,
+                chancesnow: parsedChanceSnow,
+                chanceovercast: parsedChanceOvercast,
+                sunset: parsedSunset,
+                nighttime: parsedNighttime
+            });
+        }
     });
 }
