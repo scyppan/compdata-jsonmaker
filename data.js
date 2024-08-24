@@ -44,10 +44,11 @@ function builddata() {
     document.getElementById('downloadjsonbtn').classList.remove('hidden');
 }
 
-function buildcompobjdata(content) {
+function buildcompobjdata(content) {console.log(content);
     data["compobj"] = [];
 
-    let lines = content.split('\r\n');
+    let lines = content.split(/\r?\n/);console.log(lines);
+
     lines.forEach(line => {
         let parts = line.split(',');
 
@@ -72,7 +73,7 @@ function buildcompobjdata(content) {
 function buildadvancementdata(content) {
     data["advancement"] = [];
 
-    let lines = content.split('\r\n');
+    let lines = content.split(/\r?\n/);
     lines.forEach(line => {
         let parts = line.split(',');
 
@@ -97,7 +98,7 @@ function buildadvancementdata(content) {
 function buildobjectivesdata(content) {
     data["objectives"] = [];
 
-    const lines = content.split('\r\n');
+    const lines = content.split(/\r?\n/);
     const uniqueEntries = new Map();
 
     lines.forEach(line => {
@@ -124,7 +125,7 @@ function buildobjectivesdata(content) {
 function buildscheduledata(content) {
     data["schedule"] = [];
 
-    let lines = content.split('\r\n');
+    let lines = content.split(/\r?\n/);
     lines.forEach(line => {
         let parts = line.split(',');
 
@@ -161,7 +162,7 @@ function buildsettingsdata(content) {
         'rule_bookings', 'rule_offsides', 'rule_injuries', 'rule_allowadditionalsub', 'schedule_internationaldependency'
     ];
 
-    content.split('\r\n').forEach(line => {
+    content.split(/\r?\n/).forEach(line => {
         let parts = line.split(',');
         let id = parseInt(parts[0]);
         let tag = parts[1];
@@ -191,7 +192,7 @@ function buildsettingsdata(content) {
 function buildstandingsdata(content) {
     data["standings"] = [];
 
-    let lines = content.split('\r\n');
+    let lines = content.split(/\r?\n/);
     lines.forEach(line => {
         let parts = line.split(',');
         const parsedId = parseInt(parts[0]);
@@ -209,7 +210,7 @@ function buildstandingsdata(content) {
 function buildtasksdata(content) {
     data["tasks"] = [];
 
-    let lines = content.split('\r\n');
+    let lines = content.split(/\r?\n/);
     lines.forEach(line => {
         let parts = line.split(',');
 
@@ -237,7 +238,7 @@ function buildtasksdata(content) {
 function buildweatherdata(content) {
     data["weather"] = [];
 
-    let lines = content.split('\r\n');
+    let lines = content.split(/\r?\n/);
     lines.forEach(line => {
         let parts = line.split(',');
 
