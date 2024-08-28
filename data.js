@@ -240,6 +240,8 @@ function buildweatherdata(content) {
 
     let lines = content.split(/\r?\n/);
     lines.forEach(line => {
+
+        console.log(line);
         let parts = line.split(',');
 
         const parsedId = parseInt(parts[0]);
@@ -248,8 +250,9 @@ function buildweatherdata(content) {
         const parsedChanceRain = parseInt(parts[3]);
         const parsedChanceSnow = parseInt(parts[4]);
         const parsedChanceOvercast = parseInt(parts[5]);
-        const parsedSunset = parseInt(parts[6]);
-        const parsedNighttime = parseInt(parts[7]);
+        const parsedUnknown=parseInt(parts[6]);
+        const parsedSunset = parseInt(parts[7]);
+        const parsedNighttime = parseInt(parts[8]);
 
         if (!isNaN(parsedId) && !isNaN(parsedMonth) && !isNaN(parsedChanceDry) && !isNaN(parsedChanceRain) &&
             !isNaN(parsedChanceSnow) && !isNaN(parsedChanceOvercast) && !isNaN(parsedSunset) && !isNaN(parsedNighttime)) {
@@ -260,6 +263,7 @@ function buildweatherdata(content) {
                 chancerain: parsedChanceRain,
                 chancesnow: parsedChanceSnow,
                 chanceovercast: parsedChanceOvercast,
+                unknown: parsedUnknown,
                 sunset: parsedSunset,
                 nighttime: parsedNighttime
             });
