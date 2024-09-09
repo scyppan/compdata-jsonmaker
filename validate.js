@@ -8,7 +8,8 @@ const requiredFiles = [
     'settings.txt',
     'standings.txt',
     'tasks.txt',
-    'weather.txt'
+    'weather.txt',
+    'initteams.txt'
 ];
 
 const validationRules = {

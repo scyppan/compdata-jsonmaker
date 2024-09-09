@@ -35,7 +35,9 @@ function builddata() {
             case "weather.txt":
             buildweatherdata(file.content);
             break;
-
+            case "initteams.txt":
+                buildinitteamsdata(file.content);
+            break;
             default:break;
         }
     });
@@ -241,7 +243,6 @@ function buildweatherdata(content) {
     let lines = content.split(/\r?\n/);
     lines.forEach(line => {
 
-        console.log(line);
         let parts = line.split(',');
 
         const parsedId = parseInt(parts[0]);
@@ -266,6 +267,27 @@ function buildweatherdata(content) {
                 unknown: parsedUnknown,
                 sunset: parsedSunset,
                 nighttime: parsedNighttime
+            });
+        }
+    });
+}
+
+function buildinitteamsdata(content){
+    data['initteams']=[];
+
+    let lines=content.split(/\r?\n/);
+    lines.forEach(line=>{
+        let parts=line.split(',');
+
+        const id=parseInt(parts[0]);
+        const finishpos=parseInt(parts[0]); //last year's finishing position
+        const teamid=parseInt(parts[2]);
+
+        if(!isNaN(id)&&!isNaN(finishpos)&&!isNaN(teamid)){
+            data['initteams'].push({
+                id: id,
+                finishpos: finishpos,
+                teamid: teamid
             });
         }
     });
