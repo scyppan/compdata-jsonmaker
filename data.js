@@ -280,7 +280,7 @@ function buildinitteamsdata(content){
         let parts=line.split(',');
 
         const id=parseInt(parts[0]);
-        const finishpos=parseInt(parts[0]); //last year's finishing position
+        const finishpos=parseInt(parts[1]); //last year's finishing position
         const teamid=parseInt(parts[2]);
 
         if(!isNaN(id)&&!isNaN(finishpos)&&!isNaN(teamid)){
